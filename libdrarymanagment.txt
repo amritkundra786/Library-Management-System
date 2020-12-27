@@ -1,0 +1,159 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+interface library_operations{
+
+    public void issue_book();
+    public void add_book();
+    public void return_book();
+    public void see_data();
+    public void issue_books_data();
+
+
+}
+
+class functions implements library_operations{
+    ArrayList <String> book_data = new ArrayList<String>();
+   ArrayList<Integer> book_quantity = new ArrayList<>();
+
+    ArrayList<String> issued_book = new ArrayList<String>();
+
+    void operation(){
+        System.out.println("----------------------------HOME PAGE----------------------------------");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("1. Issue Book");
+        System.out.println("2. Add book");
+        System.out.println("3. Return book");
+        System.out.println("4. See book data");
+        System.out.println("5. Show Issued Books");
+        System.out.println("6. Exit");
+        int n = sc.nextInt();
+        if(n==1){
+            issue_book();
+        }
+        else if(n==2){
+            add_book();
+        } else if(n==3){
+            return_book();
+        }
+        else if (n==4){
+            see_data();
+        }
+        else if (n==5){
+            issue_books_data();
+        }
+        else if (n==6){
+            System.exit(0);
+        }
+
+    }
+
+
+    @Override
+    public void issue_book() {
+            System.out.println("----------------------------ISSUE BOOK----------------------------------");
+            System.out.println("Enter the book you want to issue");
+            for (int i=0;i<book_data.size();i++){
+                System.out.println(i+". "+book_data.get(i)+" ("+book_quantity.get(i)+")");
+            }
+
+            Scanner sc = new Scanner(System.in);
+            int n = sc.nextInt();
+            if (book_quantity.get(n)==0){
+                System.out.println("No more books available sorry! Get any other\n\n");
+                issue_book();
+            }
+            else{
+                issued_book.add(book_data.get(n));
+                book_quantity.set(n,book_quantity.get(n)-1);
+
+                System.out.println("Done!\n\n");
+                operation();
+            }
+
+        }
+
+
+    @Override
+    public void add_book() {
+        System.out.println("----------------------------ADDING BOOK ----------------------------------");
+        System.out.println("Enter no. of the book to add");
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        String name;
+        int quantity;
+        for (int i=0;i<n;i++){
+            System.out.println("Enter name of the book");
+            name = sc.next();
+            book_data.add(name);
+            System.out.println("Enter no. of books");
+            quantity = sc.nextInt();
+            book_quantity.add(quantity);
+        }
+
+        System.out.println("Done!\n\n");
+        operation();
+
+    }
+
+    @Override
+    public void return_book() {
+        System.out.println("----------------------------RETURNING BOOK ----------------------------------");
+        System.out.println("Enter the book you want to return");
+        for (int i=0;i<book_data.size();i++){
+            System.out.println(i+". "+book_data.get(i)+" "+book_quantity.get(i));
+        }
+
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        issued_book.remove(book_data.get(n));
+        book_quantity.set(n,book_quantity.get(n)+1);
+
+        System.out.println("Done!\n\n");
+        operation();
+    }
+
+    @Override
+    //--------------------------------------ShowBooks------------------------------------------------
+    public void see_data() {
+        System.out.println("Books available in the library");
+        for (int i=0;i<book_data.size();i++){
+            System.out.println(i+". "+book_data.get(i)+" "+book_quantity.get(i));
+        }
+        System.out.println("\n\n");
+        operation();
+    }
+
+    @Override
+    //--------------------------------------Issue Books------------------------------------------------
+    public void issue_books_data() {
+        System.out.println("Issued Books data");
+        for (int i=0;i<issued_book.size();i++){
+            System.out.println(i+". "+issued_book.get(i));
+        }
+        System.out.println("\n\n");
+        operation();
+    }
+}
+
+
+
+public class library extends functions {
+
+    library(){
+        book_data.add("Theory of everything");
+        book_data.add("Java Fundamentals");
+        book_data.add("C++ for you");
+
+        book_quantity.add(2);
+        book_quantity.add(4);
+        book_quantity.add(3);
+    }
+
+    public  static void main(String [] args){
+        System.out.println("WELCOME TO LPU LIBRARY");
+        library l = new library();
+        l.operation();
+    }
+}
